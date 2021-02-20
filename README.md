@@ -32,13 +32,13 @@ You then need to import the Natural Earth data and the OpenStreetMap data in the
 Be patient, depending on your setup importing geospatial data into postgis can take more or less time.
 
 ```
-docker exec -ti osmvecto bash -c scripts/import.sh
+docker exec -ti osmvecto bash -c './import.sh https://download.geofabrik.de/europe/switzerland-latest.osm.pbf'
 ```
 
 You should now be able to start the [Baremaps](https://github.com/baremaps/baremaps) tile server.
 
 ```
-docker exec -ti osmvecto bash -c scripts/start.sh
+docker exec -ti osmvecto bash -c ./start.sh
 ```
 
 Your browser ([http://localhost:9000/](http://localhost:9000/)) should now preview OpenStreetMap Vecto.
@@ -68,3 +68,13 @@ docker push baremaps/osmvecto
 ## Contributing
 
 As a lot remains to be done, contributions and feedbacks are welcome. 
+
+## Troubleshooting windows
+
+On windows, be careful with line endings (LF), especially when the files are mounted in a docker container.
+
+```
+docker system prune -a
+docker run -d --name osmvecto --publish 5432:5432 --publish 9000:9000 --volume C:\openstreetmap-vecto:/home baremaps/osmvecto:latest
+docker exec -ti osmvecto bash -c ./import.sh https://download.geofabrik.de/europe/switzerland-latest.osm.pbf
+```
